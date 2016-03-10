@@ -43,6 +43,14 @@ export abstract class SpellingManager {
     public check(token: string): TokenCheckStatus {
         return TokenCheckStatus.Unknown;
     }
+
+    /**
+    * Gives a suggestion for a token, sorted by likelyhood with the first item
+    * in the resulting array being the most likely.
+    */
+    public suggest(token: string): string[] {
+        return [];
+    }
 }
 
 /**
@@ -51,6 +59,7 @@ export abstract class SpellingManager {
 * methods along with suggestions that are capitalized based on the incorrect word.
 */
 export class TokenSpellingManager extends SpellingManager {
+    public maximumDistance: number = 0.9;
     public sensitive: any = {};
     public insensitive: any = {};
 
@@ -91,7 +100,7 @@ export class TokenSpellingManager extends SpellingManager {
     */
     public addCaseInsensitive(token: string): void {
         if (token && token.trim() !== "") {
-            this.insensitive[token] = true;
+            this.insensitive[token.toLowerCase()] = true;
         }
     }
 
@@ -130,6 +139,65 @@ export class TokenSpellingManager extends SpellingManager {
         if (token && token.trim() !== "") {
             delete this.insensitive[token];
         }
+    }
+
+    /**
+    * Gives a suggestion for a token, sorted by likelyhood with the first item
+    * in the resulting array being the most likely.
+    */
+    public suggest(input: string): string[] {
+        // If the input is blank or null, then we don't have a suggestion.
+        if (!input || input.trim().length === 0) return [];
+
+        // Gather up all the suggestions from the case-sensitive list.
+        let weights: any = [];
+
+        for (var token in this.sensitive) {
+            let distance = natural.JaroWinklerDistance(input, token);
+            if (distance >= this.maximumDistance)
+                weights.push({ token: token, distance: distance });
+        }
+
+        // Also gather up the weights from the insensitive list. When we go
+        // through this one, we try to find the "best" approach which means if
+        // the input is all uppercase, then we compare that. Otherwise, we try
+        // initial capital, and finally we see if lowercase would work better.
+        for (var token in this.insensitive) {
+            // Figure out the best approah.
+            let test: string = token;
+
+            if (/[A-Z].*[A-Z]/.test(input)) {
+                test = test.toUpperCase();
+            }
+            else if (/^[A-Z]/.test(input)) {
+                test = test.charAt(0).toUpperCase() + test.slice(1);
+            }
+
+            // Figure out the distance as above.
+            let distance = natural.JaroWinklerDistance(input, test);
+            if (distance >= this.maximumDistance)
+                weights.push({ token: test, distance: distance });
+        }
+
+        // Sort the list based on the distances. This will have the first key
+        // be the highest distance.
+        let keys = Object.keys(weights).sort(function(key1, key2) {
+            let value1 = weights[key1];
+            let value2 = weights[key2];
+            if (value1.distance != value2.distance) {
+                return value1.distance - value2.distance
+            }
+            return value1.token.localeCompare(value2.token)
+        });
+
+        // Go through the resulting items and pull out an ordered list.
+        let results: string[] = [];
+
+        for (let key of keys) {
+            results.push(weights[key].token)
+        }
+
+        return results;
     }
 }
 
