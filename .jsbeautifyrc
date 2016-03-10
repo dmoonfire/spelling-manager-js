@@ -1,0 +1,27 @@
+{
+	"html": {
+		"indent_with_tabs": true,
+		"brace_style": "collapse",
+		"indent_scripts": "normal",
+		"max_preserve_newlines": 1,
+		"preserve_newlines": true,
+		"unformatted": ["a", "sub", "sup", "b", "i", "u"],
+		"wrap_line_length": 0
+	},
+	"css": {
+		"indent_with_tabs": true
+	},
+	"js": {
+		"indent_with_tabs": true,
+		"indent_level": 0,
+		"preserve_newlines": false,
+		"max_preserve_newlines": 2,
+		"jslint_happy": true,
+		"brace_style": "expand",
+		"end_with_newline": true
+	},
+	"sql": {
+		"indent_with_tabs": true,
+		"indent_level": 0,
+	}
+}

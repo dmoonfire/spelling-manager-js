@@ -1,0 +1,43 @@
+{
+    "version": "1.6.0",
+    "compilerOptions": {
+        "declaration": true,
+        "noImplicitAny": true,
+        "noLib": false,
+        "preserveConstEnums": true,
+        "removeComments": true,
+        "sourceMap": true,
+        "target": "es5",
+        "module": "umd",
+        "outDir": "../lib",
+        "moduleResolution": "node"
+    },
+    "formatCodeOptions": {
+        "convertTabsToSpaces": true,
+        "indentSize": 4,
+        "insertSpaceAfterCommaDelimiter": true,
+        "insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
+        "insertSpaceAfterKeywordsInControlFlowStatements": true,
+        "insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": false,
+        "insertSpaceAfterSemicolonInForStatements": true,
+        "insertSpaceBeforeAndAfterBinaryOperators": true,
+        "newLineCharacter": "\r\n",
+        "placeOpenBraceOnNewLineForControlBlocks": true,
+        "placeOpenBraceOnNewLineForFunctions": true,
+        "tabSize": 4
+    },
+    "filesGlob": [
+        "**/*.ts",
+        "!**/*.d.ts",
+        "!node_modules/**/*.ts"
+    ],
+    "files": [
+        "init.ts",
+        "spec/buffer-check-spec.ts",
+        "spec/environment-spec.ts",
+        "spec/token-spec.ts"
+    ],
+    "atom": {
+        "rewriteTsconfig": true
+    }
+}
