@@ -15,8 +15,8 @@ describe("simple positive check", function() {
 
         expect(results).toEqual([
             { token: 'I', start: 0, end: 1, status: TokenCheckStatus.Unknown },
-            { token: 'like', start: 2, end: 6, status: TokenCheckStatus.Correct },
-            { token: 'cheese', start: 7, end: 13, status: TokenCheckStatus.Unknown }
+            { token: 'LIKE', start: 2, end: 6, status: TokenCheckStatus.Correct },
+            { token: 'CHEESE', start: 7, end: 13, status: TokenCheckStatus.Unknown }
         ]);
     });
 });

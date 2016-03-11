@@ -9,6 +9,12 @@ describe("adding words", function() {
         expect(spell.sensitive).toEqual({ "Word": true });
         expect(spell.insensitive).toEqual({});
     });
+    it("add lowercase sensitive", function() {
+        let spell = new TokenSpellingManager();
+        spell.add("!word");
+        expect(spell.sensitive).toEqual({ "word": true });
+        expect(spell.insensitive).toEqual({});
+    });
     it("add sensitive as add", function() {
         let spell = new TokenSpellingManager();
         spell.add("Word");
@@ -62,6 +68,14 @@ describe("suggesting words", function() {
 
         let suggestions = spell.suggest("Wrd");
         expect(suggestions).toEqual(['Word']);
+    });
+    it("suggest case sensitive lowercase and uppercase", function() {
+        let spell = new TokenSpellingManager();
+        spell.addCaseSensitive("Word");
+        spell.addCaseSensitive("word");
+
+        let suggestions = spell.suggest("Wrd");
+        expect(suggestions).toEqual(['word', 'Word']);
     });
 
     it("suggest case sensitive", function() {

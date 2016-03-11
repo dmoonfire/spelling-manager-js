@@ -66,6 +66,7 @@ export class TokenSpellingManager extends SpellingManager {
     /**
     * Adds a word to the manager. If the word is in all lowercase, then it is added as
     * a case insensitive word, otherwise it is added as a case sensitive result.
+    * If a token starts with "!", then it is automatically case-sensitive.
     */
     public add(token: string): void {
         if (token && token.trim() !== "") {
@@ -74,6 +75,8 @@ export class TokenSpellingManager extends SpellingManager {
             // ignore things like single quotes for posessives or contractions.
             if (/[A-Z]/.test(token)) {
                 this.addCaseSensitive(token);
+            } else if (/^!/.test(token)) {
+                this.addCaseSensitive(token.substring(1));
             } else {
                 this.addCaseInsensitive(token);
             }
@@ -152,7 +155,7 @@ export class TokenSpellingManager extends SpellingManager {
         // Gather up all the suggestions from the case-sensitive list.
         let weights: any = [];
 
-        for (var token in this.sensitive) {
+        for (let token in this.sensitive) {
             let distance = natural.JaroWinklerDistance(input, token);
             if (distance >= this.maximumDistance)
                 weights.push({ token: token, distance: distance });
@@ -162,7 +165,7 @@ export class TokenSpellingManager extends SpellingManager {
         // through this one, we try to find the "best" approach which means if
         // the input is all uppercase, then we compare that. Otherwise, we try
         // initial capital, and finally we see if lowercase would work better.
-        for (var token in this.insensitive) {
+        for (let token in this.insensitive) {
             // Figure out the best approah.
             let test: string = token;
 
@@ -184,17 +187,17 @@ export class TokenSpellingManager extends SpellingManager {
         let keys = Object.keys(weights).sort(function(key1, key2) {
             let value1 = weights[key1];
             let value2 = weights[key2];
-            if (value1.distance != value2.distance) {
-                return value1.distance - value2.distance
+            if (value1.distance !== value2.distance) {
+                return value1.distance - value2.distance;
             }
-            return value1.token.localeCompare(value2.token)
+            return value1.token.localeCompare(value2.token);
         });
 
         // Go through the resulting items and pull out an ordered list.
         let results: string[] = [];
 
         for (let key of keys) {
-            results.push(weights[key].token)
+            results.push(weights[key].token);
         }
 
         return results;
