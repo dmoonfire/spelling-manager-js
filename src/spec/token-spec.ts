@@ -2,6 +2,15 @@
 /// <reference path="../init.ts"/>
 import { TokenSpellingManager } from "../init";
 
+describe("listing words", function() {
+    it("simple list", function() {
+        let spell = new TokenSpellingManager();
+        spell.add(["a", "z", "!b", "y"]);
+        let list = spell.list();
+        expect(list).toEqual(["!b", "a", "y", "z"]);
+    });
+});
+
 describe("adding words", function() {
     it("add sensitive", function() {
         let spell = new TokenSpellingManager();
@@ -14,6 +23,12 @@ describe("adding words", function() {
         spell.add("!word");
         expect(spell.sensitive).toEqual({ "word": true });
         expect(spell.insensitive).toEqual({});
+    });
+    it("add array", function() {
+        let spell = new TokenSpellingManager();
+        spell.add(["!word", "cheese"]);
+        expect(spell.sensitive).toEqual({ "word": true });
+        expect(spell.insensitive).toEqual({ "cheese": true });
     });
     it("add sensitive as add", function() {
         let spell = new TokenSpellingManager();

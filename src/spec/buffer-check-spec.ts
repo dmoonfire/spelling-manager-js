@@ -11,7 +11,6 @@ describe("simple positive check", function() {
         let results = checker.check("I like cheese.");
 
         results = checker.check("I LIKE CHEESE.");
-        console.log(results);
 
         expect(results).toEqual([
             { token: 'I', start: 0, end: 1, status: TokenCheckStatus.Unknown },

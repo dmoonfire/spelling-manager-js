@@ -68,17 +68,29 @@ export class TokenSpellingManager extends SpellingManager {
     * a case insensitive word, otherwise it is added as a case sensitive result.
     * If a token starts with "!", then it is automatically case-sensitive.
     */
-    public add(token: string): void {
-        if (token && token.trim() !== "") {
-            // If we have at least one uppercase character, we are considered
-            // case sensitive. We don't test for lowercase because we want to
-            // ignore things like single quotes for posessives or contractions.
-            if (/[A-Z]/.test(token)) {
-                this.addCaseSensitive(token);
-            } else if (/^!/.test(token)) {
-                this.addCaseSensitive(token.substring(1));
-            } else {
-                this.addCaseInsensitive(token);
+    public add(token: string|string[]): void {
+        // If we aren't an array, then wrap it in an array.
+        let tokens: string[];
+
+        if (typeof token === "string") {
+            tokens = [<string>token];
+        } else {
+            tokens = <string[]> token;
+        }
+
+        // Loop through all the tokens and add each one.
+        for (let t of tokens) {
+            if (t && t.trim() !== "") {
+                // If we have at least one uppercase character, we are considered
+                // case sensitive. We don't test for lowercase because we want to
+                // ignore things like single quotes for posessives or contractions.
+                if (/[A-Z]/.test(t)) {
+                    this.addCaseSensitive(t);
+                } else if (/^!/.test(t)) {
+                    this.addCaseSensitive(t.substring(1));
+                } else {
+                    this.addCaseInsensitive(t);
+                }
             }
         }
     }
@@ -114,6 +126,35 @@ export class TokenSpellingManager extends SpellingManager {
         if (token in this.sensitive) return TokenCheckStatus.Correct;
         if (token.toLowerCase() in this.insensitive) return TokenCheckStatus.Correct;
         return TokenCheckStatus.Unknown;
+    }
+
+    /**
+    * Lists all of the words in a combined list appropriate for adding back
+    * into the manager.
+    */
+    public list(): string[] {
+        // Gather up the list of sensitive items, prefixing with "!" for those
+        // which would normally be in the case-insensitive list if they were
+        // re-add()ed.
+        let list = new Array<string>();
+
+        for (let token in this.sensitive) {
+            if (token === token.toLowerCase()) {
+                list.push("!" + token);
+            } else {
+                list.push(token);
+            }
+        }
+
+        // Add in the insensitive items.
+        for (let token in this.insensitive) {
+            list.push(token);
+        }
+
+        // Sort the results because we always produce sorted results. Then
+        // return it.
+        list.sort();
+        return list;
     }
 
     /**
