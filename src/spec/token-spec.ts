@@ -1,4 +1,4 @@
-import { TokenSpellingManager } from "../init";
+import { TokenSpellingManager } from "../index";
 const expect = require("expect");
 import * as path from "path";
 

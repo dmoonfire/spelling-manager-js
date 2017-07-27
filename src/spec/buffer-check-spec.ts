@@ -1,4 +1,4 @@
-import { BufferSpellingChecker, TokenSpellingManager, TokenCheckStatus } from "../init";
+import { BufferSpellingChecker, TokenSpellingManager, TokenCheckStatus } from "../index";
 const expect = require("expect");
 import * as path from "path";
 

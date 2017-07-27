@@ -29,11 +29,9 @@
   },
   "devDependencies": {
     "@types/expect": "^1.20.1",
-    "@types/jasmine": "^2.5.53",
     "@types/mocha": "^2.2.41",
     "@types/node": "^8.0.17",
     "expect": "^1.20.2",
-    "jasmine-node": "^1.14.5",
     "mocha": "^3.4.2",
     "tslint": "^3.0.0",
     "typescript": "^2.4.2"
@@ -42,6 +40,6 @@
     "@types/natural": "^0.2.32",
     "natural": "^0.5.4"
   },
-  "main": "lib/init.js",
-  "types": "lib/init.d.ts"
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts"
 }
