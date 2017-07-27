@@ -1,9 +1,8 @@
-/// <reference path="../typings/main.d.ts"/>
 import * as natural from "natural";
 
 /**
-* The various states of checking a token.
-*/
+ * The various states of checking a token.
+ */
 export enum TokenCheckStatus {
     Unknown,
     Correct,
@@ -11,9 +10,9 @@ export enum TokenCheckStatus {
 }
 
 /**
-* Describes a single token within a given text along with its positioning
-* information.
-*/
+ * Describes a single token within a given text along with its positioning
+ * information.
+ */
 export interface TokenStatus {
     start: number;
     end: number;
@@ -22,58 +21,62 @@ export interface TokenStatus {
 }
 
 /**
-* Defines the common functionality for the various spelling managers.
-*/
+ * Defines the common functionality for the various spelling managers.
+ */
 export abstract class SpellingManager {
     /**
-    * Adds a word to the spelling manager.
-    */
-    public add(token: string): void { }
+     * Adds a word to the spelling manager.
+     */
+    public add(token: string): void {
+        // We don't have default functionality for adding.
+    }
 
     /**
-    * Check to see if a token is correct.
-    */
+     * Check to see if a token is correct.
+     */
     public isCorrect(token: string): boolean {
         return this.check(token) === TokenCheckStatus.Correct;
     }
 
     /**
-    * Checks the token to determine if it is correct or incorrect.
-    */
+     * Checks the token to determine if it is correct or incorrect.
+     */
     public check(token: string): TokenCheckStatus {
         return TokenCheckStatus.Unknown;
     }
 
     /**
-    * Gives a suggestion for a token, sorted by likelyhood with the first item
-    * in the resulting array being the most likely.
-    */
+     * Gives a suggestion for a token, sorted by likelyhood with the first item
+     * in the resulting array being the most likely.
+     */
     public suggest(token: string): string[] {
         return [];
     }
 }
 
 /**
-* A token-based spelling manager that uses non-processed list of words to provides
-* correctness testing and suggestions. This has both case-sensitive and -insensitive
-* methods along with suggestions that are capitalized based on the incorrect word.
-*/
+ * A token-based spelling manager that uses non-processed list of words to
+ * provides correctness testing and suggestions. This has both case-sensitive
+ * and -insensitive methods along with suggestions that are capitalized based
+ * on the incorrect word.
+ */
 export class TokenSpellingManager extends SpellingManager {
     public maximumDistance: number = 0.9;
     public sensitive: any = {};
     public insensitive: any = {};
 
     /**
-    * Adds a word to the manager. If the word is in all lowercase, then it is added as
-    * a case insensitive word, otherwise it is added as a case sensitive result.
-    * If a token starts with "!", then it is automatically case-sensitive.
-    */
+     * Adds a word to the manager. If the word is in all lowercase, then it is
+     * added as a case insensitive word, otherwise it is added as a case
+     * sensitive result. If a token starts with "!", then it is automatically
+     * case-sensitive.
+     */
     public add(token: string|string[]): void {
         // If we aren't an array, then wrap it in an array.
         let tokens: string[];
 
         if (typeof token === "string") {
-            tokens = [<string>token];
+            tokens = [<string> token];
         } else {
             tokens = <string[]> token;
         }
@@ -81,9 +84,10 @@ export class TokenSpellingManager extends SpellingManager {
         // Loop through all the tokens and add each one.
         for (let t of tokens) {
             if (t && t.trim() !== "") {
-                // If we have at least one uppercase character, we are considered
-                // case sensitive. We don't test for lowercase because we want to
-                // ignore things like single quotes for posessives or contractions.
+                // If we have at least one uppercase character, we are
+                // considered case sensitive. We don't test for lowercase
+                // because we want to ignore things like single quotes for
+                // posessives or contractions.
                 if (/[A-Z]/.test(t)) {
                     this.addCaseSensitive(t);
                 } else if (/^!/.test(t)) {
@@ -96,11 +100,11 @@ export class TokenSpellingManager extends SpellingManager {
     }
 
     /**
-    * Adds a case-sensitive token, if it hasn't already been added.
-    *
-    * There is no check to see if this token is already in the case-insensitive
-    * list.
-    */
+     * Adds a case-sensitive token, if it hasn't already been added.
+     *
+     * There is no check to see if this token is already in the case-insensitive
+     * list.
+     */
     public addCaseSensitive(token: string): void {
         if (token && token.trim() !== "") {
             this.sensitive[token] = true;
@@ -108,11 +112,11 @@ export class TokenSpellingManager extends SpellingManager {
     }
 
     /**
-    * Adds a case-insensitive token, if it hasn't already been added.
-    *
-    * There is no check to see if this token is already in the case-sensitive
-    * list.
-    */
+     * Adds a case-insensitive token, if it hasn't already been added.
+     *
+     * There is no check to see if this token is already in the case-sensitive
+     * list.
+     */
     public addCaseInsensitive(token: string): void {
         if (token && token.trim() !== "") {
             this.insensitive[token.toLowerCase()] = true;
@@ -120,18 +124,24 @@ export class TokenSpellingManager extends SpellingManager {
     }
 
     /**
-    * Checks the token to determine if it is correct or incorrect.
-    */
+     * Checks the token to determine if it is correct or incorrect.
+     */
     public check(token: string): TokenCheckStatus {
-        if (token in this.sensitive) return TokenCheckStatus.Correct;
-        if (token.toLowerCase() in this.insensitive) return TokenCheckStatus.Correct;
+        if (token in this.sensitive) {
+            return TokenCheckStatus.Correct;
+        }
+
+        if (token.toLowerCase() in this.insensitive) {
+            return TokenCheckStatus.Correct;
+        }
+
         return TokenCheckStatus.Unknown;
     }
 
     /**
-    * Lists all of the words in a combined list appropriate for adding back
-    * into the manager.
-    */
+     * Lists all of the words in a combined list appropriate for adding back
+     * into the manager.
+     */
     public list(): string[] {
         // Gather up the list of sensitive items, prefixing with "!" for those
         // which would normally be in the case-insensitive list if they were
@@ -158,8 +168,8 @@ export class TokenSpellingManager extends SpellingManager {
     }
 
     /**
-    * Removes tokens, if it has been added.
-    */
+     * Removes tokens, if it has been added.
+     */
     public remove(token: string): void {
         if (token && token.trim() !== "") {
             this.removeCaseSensitive(token);
@@ -168,8 +178,8 @@ export class TokenSpellingManager extends SpellingManager {
     }
 
     /**
-    * Removes a case-sensitive token, if it has been added.
-    */
+     * Removes a case-sensitive token, if it has been added.
+     */
     public removeCaseSensitive(token: string): void {
         if (token && token.trim() !== "") {
             delete this.sensitive[token];
@@ -177,8 +187,8 @@ export class TokenSpellingManager extends SpellingManager {
     }
 
     /**
-    * Removes a case-insensitive token, if it has been added.
-    */
+     * Removes a case-insensitive token, if it has been added.
+     */
     public removeCaseInsensitive(token: string): void {
         if (token && token.trim() !== "") {
             delete this.insensitive[token];
@@ -186,20 +196,24 @@ export class TokenSpellingManager extends SpellingManager {
     }
 
     /**
-    * Gives a suggestion for a token, sorted by likelyhood with the first item
-    * in the resulting array being the most likely.
-    */
+     * Gives a suggestion for a token, sorted by likelyhood with the first item
+     * in the resulting array being the most likely.
+     */
     public suggest(input: string): string[] {
         // If the input is blank or null, then we don't have a suggestion.
-        if (!input || input.trim().length === 0) return [];
+        if (!input || input.trim().length === 0) {
+            return [];
+        }
 
         // Gather up all the suggestions from the case-sensitive list.
         let weights: any = [];
 
         for (let token in this.sensitive) {
             let distance = natural.JaroWinklerDistance(input, token);
-            if (distance >= this.maximumDistance)
-                weights.push({ token: token, distance: distance });
+
+            if (distance >= this.maximumDistance) {
+                weights.push({ distance: distance, token: token });
+            }
         }
 
         // Also gather up the weights from the insensitive list. When we go
@@ -212,15 +226,16 @@ export class TokenSpellingManager extends SpellingManager {
 
             if (/[A-Z].*[A-Z]/.test(input)) {
                 test = test.toUpperCase();
-            }
-            else if (/^[A-Z]/.test(input)) {
+            } else if (/^[A-Z]/.test(input)) {
                 test = test.charAt(0).toUpperCase() + test.slice(1);
             }
 
             // Figure out the distance as above.
             let distance = natural.JaroWinklerDistance(input, test);
-            if (distance >= this.maximumDistance)
-                weights.push({ token: test, distance: distance });
+
+            if (distance >= this.maximumDistance) {
+                weights.push({ distance: distance, token: test });
+            }
         }
 
         // Sort the list based on the distances. This will have the first key
@@ -246,25 +261,31 @@ export class TokenSpellingManager extends SpellingManager {
 }
 
 /**
-* Checks the contents of a buffer against a spelling manager, producing a
-* tokenized list and the check status for each one.
-*/
+ * Checks the contents of a buffer against a spelling manager, producing a
+ * tokenized list and the check status for each one.
+ */
 export class BufferSpellingChecker {
-    constructor(spellingManager: SpellingManager, tokenizer: natural.Tokenizer = null) {
+    private spellingManager: SpellingManager;
+    private tokenizer: natural.Tokenizer;
+
+    constructor(
+        spellingManager: SpellingManager,
+        tokenizer: natural.Tokenizer = null) {
         if (!tokenizer) {
-            tokenizer = new natural.RegexpTokenizer({ pattern: /(\w+(?:\'\w+)?)/ });
+            tokenizer = new natural.RegexpTokenizer({
+                pattern: /(\w+(?:\'\w+)?)/,
+            });
         }
 
         this.spellingManager = spellingManager;
         this.tokenizer = tokenizer;
     }
 
-    private spellingManager: SpellingManager;
-    private tokenizer: natural.Tokenizer;
-
     public check(buffer: string): TokenStatus[] {
         // If we have a blank or empty string, then just return an empty list.
-        if (!buffer || buffer.trim() === "") return new Array<TokenStatus>();
+        if (!buffer || buffer.trim() === "") {
+            return new Array<TokenStatus>();
+        }
 
         // Since we have useful values, we need to now tokenize them. This
         // doesn't give us positional information, but we'll build that up as we
@@ -275,14 +296,20 @@ export class BufferSpellingChecker {
 
         for (let token of tokens) {
             // If we don't have at least one character, skip it.
-            if (!/\w/.test(token)) continue;
+            if (!/\w/.test(token)) {
+                continue;
+            }
 
             // Figure out where this token appears in the buffer.
             let tokenIndex = buffer.indexOf(token, startSearch);
 
             if (tokenIndex < 0) {
                 // We should never get to this.
-                throw new Error(`Cannot find token '${token}' starting at position ${startSearch}.`);
+                throw new Error("Cannot find token '"
+                    + token
+                    + "' starting at position "
+                    + startSearch
+                    + "}.");
             }
 
             startSearch = tokenIndex + token.length;
@@ -292,10 +319,10 @@ export class BufferSpellingChecker {
 
             // Build up the token status.
             let tokenStatus: TokenStatus = {
-                token: token,
-                start: tokenIndex,
                 end: tokenIndex + token.length,
-                status: checkStatus
+                start: tokenIndex,
+                status: checkStatus,
+                token: token,
             };
             results.push(tokenStatus);
         }

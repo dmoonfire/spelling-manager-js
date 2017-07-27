@@ -1,8 +1,8 @@
-/// <reference path="../../typings/main.d.ts"/>
-/// <reference path="../init.ts"/>
 import { BufferSpellingChecker, TokenSpellingManager, TokenCheckStatus } from "../init";
+const expect = require("expect");
+import * as path from "path";
 
-describe("simple positive check", function() {
+describe(path.basename(__filename), function() {
     it("single valid word", function() {
         let spell = new TokenSpellingManager();
         spell.add("like");
