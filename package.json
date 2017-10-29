@@ -13,7 +13,7 @@
     "spelling"
   ],
   "scripts": {
-    "lint": "tslint src/*.ts",
+    "lint": "tslint --project src/",
     "pretest": "npm run build",
     "test": "mocha lib/spec/*-spec.js",
     "prebuild": "npm run lint",
@@ -35,7 +35,7 @@
     "@types/xregexp": "^3.0.29",
     "expect": "^1.20.2",
     "mocha": "^3.4.2",
-    "tslint": "^3.0.0",
+    "tslint": "^5.8.0",
     "typescript": "^2.4.2"
   },
   "dependencies": {

@@ -24,13 +24,13 @@ export class TokenSpellingManager extends SpellingManager {
         let tokens: string[];
 
         if (typeof token === "string") {
-            tokens = [<string> token];
+            tokens = [token as string];
         } else {
-            tokens = <string[]> token;
+            tokens = token as string[];
         }
 
         // Loop through all the tokens and add each one.
-        for (let t of tokens) {
+        for (const t of tokens) {
             if (t && t.trim() !== "") {
                 // If we have at least one uppercase character, we are
                 // considered case sensitive. We don't test for lowercase
@@ -94,9 +94,9 @@ export class TokenSpellingManager extends SpellingManager {
         // Gather up the list of sensitive items, prefixing with "!" for those
         // which would normally be in the case-insensitive list if they were
         // re-add()ed.
-        let list = new Array<string>();
+        const list = new Array<string>();
 
-        for (let token in this.sensitive) {
+        for (const token in this.sensitive) {
             if (token === token.toLowerCase()) {
                 list.push("!" + token);
             } else {
@@ -105,7 +105,7 @@ export class TokenSpellingManager extends SpellingManager {
         }
 
         // Add in the insensitive items.
-        for (let token in this.insensitive) {
+        for (const token in this.insensitive) {
             list.push(token);
         }
 
@@ -154,13 +154,13 @@ export class TokenSpellingManager extends SpellingManager {
         }
 
         // Gather up all the suggestions from the case-sensitive list.
-        let weights: any = [];
+        const weights: any = [];
 
-        for (let token in this.sensitive) {
-            let distance = natural.JaroWinklerDistance(input, token);
+        for (const token in this.sensitive) {
+            const distance = natural.JaroWinklerDistance(input, token);
 
             if (distance >= this.maximumDistance) {
-                weights.push({ distance: distance, token: token });
+                weights.push({ distance, token });
             }
         }
 
@@ -168,7 +168,7 @@ export class TokenSpellingManager extends SpellingManager {
         // through this one, we try to find the "best" approach which means if
         // the input is all uppercase, then we compare that. Otherwise, we try
         // initial capital, and finally we see if lowercase would work better.
-        for (let token in this.insensitive) {
+        for (const token in this.insensitive) {
             // Figure out the best approah.
             let test: string = token;
 
@@ -179,18 +179,18 @@ export class TokenSpellingManager extends SpellingManager {
             }
 
             // Figure out the distance as above.
-            let distance = natural.JaroWinklerDistance(input, test);
+            const distance = natural.JaroWinklerDistance(input, test);
 
             if (distance >= this.maximumDistance) {
-                weights.push({ distance: distance, token: test });
+                weights.push({ distance, token: test });
             }
         }
 
         // Sort the list based on the distances. This will have the first key
         // be the highest distance.
-        let keys = Object.keys(weights).sort(function(key1, key2) {
-            let value1 = weights[key1];
-            let value2 = weights[key2];
+        const keys = Object.keys(weights).sort((key1, key2) => {
+            const value1 = weights[key1];
+            const value2 = weights[key2];
             if (value1.distance !== value2.distance) {
                 return value1.distance - value2.distance;
             }
@@ -198,9 +198,9 @@ export class TokenSpellingManager extends SpellingManager {
         });
 
         // Go through the resulting items and pull out an ordered list.
-        let results: string[] = [];
+        const results: string[] = [];
 
-        for (let key of keys) {
+        for (const key of keys) {
             results.push(weights[key].token);
         }
 
