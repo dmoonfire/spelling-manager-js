@@ -30,7 +30,9 @@ import * as XRegExp from "xregexp";
 //   \p{Pf} - any kind of closing quote.
 //   \p{Pc} - a punctuation character such as an underscore that connects words.
 //   \p{Po} - any kind of punctuation character that is not a dash, bracket,
-const char = "[\\p{L}\\p{M}\\p{N}\\p{Pc}]";
+const char =
+  "(?:[\\p{L}\\p{M}\\p{Nd}\\p{Nl}\\p{Pc}]|" +
+  "(?=\\p{InEnclosedAlphanumerics})\\p{So})";
 
 // The important part is also handling puncutation in the middle of the word for
 // things like contractions. There isn't a Unicode pattern for these, so we
@@ -46,7 +48,7 @@ const innerWordPunctuation = "['\\u{2019}]";
  * group used with this query will be the words split apart and passed into
  * the check() method.
  */
-export var wordTokenzier = XRegExp(
+export let wordTokenzier = XRegExp(
     "("
     + char
     + "+(?:"
@@ -59,4 +61,4 @@ export var wordTokenzier = XRegExp(
  * token. This is used to avoid passing puncutation sequences into the
  * check() method.
  */
-export var isWord = XRegExp(char);
+export let isWord = XRegExp(char);
