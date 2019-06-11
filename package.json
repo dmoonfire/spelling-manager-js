@@ -34,7 +34,7 @@
     "@types/node": "^8.0.17",
     "@types/xregexp": "^3.0.29",
     "expect": "^1.20.2",
-    "mocha": "^3.4.2",
+    "mocha": "^6.1.4",
     "tslint": "^5.8.0",
     "typescript": "^2.4.2"
   },
