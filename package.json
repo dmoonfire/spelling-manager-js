@@ -1,6 +1,6 @@
 {
   "name": "spelling-manager",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "A library that provides a framework for creating and using spelling checkers. This is a composite-based system where individual components can be combined together to provide the spelling checking on larger text strings.",
   "license": "MIT",
   "author": {
