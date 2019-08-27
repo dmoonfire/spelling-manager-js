@@ -16,15 +16,11 @@ steps:
     versionSpec: '10.x'
 
 - script: |
-    npm install
-    npm run build
-
-  displayName: 'NPM Install'
-
-- script: |
     echo "B" $BUILD_SOURCEBRANCH
-    echo "W" $($GH_TOKEN | wc)
+    echo "W" $(echo $GH_TOKEN | wc)
+    npm install
     npx commitlint --from=master to=$BUILD_SOURCEBRANCH
+    npm run build
     npx semantic-release
 
   env:
