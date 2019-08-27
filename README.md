@@ -54,7 +54,7 @@ var checker = new BufferSpellingChecker(spell, tokenizer);
 To build the library:
 
 ```sh
-npm build
+npm run build
 ```
 
 To test the library:
