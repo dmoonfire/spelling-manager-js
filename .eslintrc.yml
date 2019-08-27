@@ -1,0 +1,45 @@
+env:
+  es6: true
+  node: true
+extends: 'eslint:recommended'
+parser: "@typescript-eslint/parser"
+parserOptions:
+  ecmaFeatures:
+    jsx: true
+  ecmaVersion: 2018
+  sourceType: module
+plugins:
+  - "@typescript-eslint"
+rules:
+  "@typescript-eslint/class-name-casing":
+    - error
+  "@typescript-eslint/member-naming":
+    - error
+  "@typescript-eslint/member-ordering":
+    - error
+  "@typescript-eslint/no-unused-vars":
+    - off
+  "@typescript-eslint/no-var-requires":
+    - error
+  indent:
+    - error
+    - 4
+  linebreak-style:
+    - error
+    - unix
+  quotes:
+    - error
+    - double
+  semi:
+    - error
+    - always
+
+  # Eventually
+  no-console:
+    - warn
+
+  # We are having trouble with these two, so we turn them off.
+  no-undef:
+    - off
+  no-unused-vars:
+    - off

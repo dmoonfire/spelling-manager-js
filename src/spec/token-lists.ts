@@ -1,6 +1,6 @@
-import { TokenSpellingManager } from "../index";
-const expect = require("expect");
+import * as expect from "expect";
 import * as path from "path";
+import { TokenSpellingManager } from "../index";
 
 describe(path.basename(__filename), function() {
     describe("listing words", function() {
@@ -83,7 +83,7 @@ describe(path.basename(__filename), function() {
             spell.addCaseSensitive("Work");
 
             let suggestions = spell.suggest("Wrd");
-            expect(suggestions).toEqual(['Word']);
+            expect(suggestions).toEqual(["Word"]);
         });
         it("suggest case sensitive lowercase and uppercase", function() {
             let spell = new TokenSpellingManager();
@@ -91,7 +91,7 @@ describe(path.basename(__filename), function() {
             spell.addCaseSensitive("word");
 
             let suggestions = spell.suggest("Wrd");
-            expect(suggestions).toEqual(['word', 'Word']);
+            expect(suggestions).toEqual(["word", "Word"]);
         });
 
         it("suggest case sensitive", function() {
@@ -100,7 +100,7 @@ describe(path.basename(__filename), function() {
             spell.addCaseSensitive("Work");
 
             let suggestions = spell.suggest("Wor");
-            expect(suggestions).toEqual(['Word', 'Work']);
+            expect(suggestions).toEqual(["Word", "Work"]);
         });
 
         it("suggest insensitive", function() {
@@ -109,7 +109,7 @@ describe(path.basename(__filename), function() {
             spell.add("word");
 
             let suggestions = spell.suggest("wor");
-            expect(suggestions).toEqual(['worth', 'word']);
+            expect(suggestions).toEqual(["worth", "word"]);
         });
 
         it("suggest insensitive", function() {
@@ -118,7 +118,7 @@ describe(path.basename(__filename), function() {
             spell.add("word");
 
             let suggestions = spell.suggest("Wor");
-            expect(suggestions).toEqual(['Worth', 'Word']);
+            expect(suggestions).toEqual(["Worth", "Word"]);
         });
 
         it("suggest insensitive", function() {
@@ -127,7 +127,7 @@ describe(path.basename(__filename), function() {
             spell.add("word");
 
             let suggestions = spell.suggest("WOR");
-            expect(suggestions).toEqual(['WORTH', 'WORD']);
+            expect(suggestions).toEqual(["WORTH", "WORD"]);
         });
     });
 });

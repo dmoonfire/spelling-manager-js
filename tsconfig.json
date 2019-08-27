@@ -1,0 +1,24 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "outDir": "lib",
+        "alwaysStrict": true,
+        "composite": true,
+        "declaration": true,
+        "declarationMap": true,
+        "experimentalDecorators": true,
+        "forceConsistentCasingInFileNames": true,
+        "lib": ["es6", "dom"],
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": false,
+        "noImplicitReturns": true,
+	    "rootDir": "./src",
+        "sourceMap": true,
+        "strictFunctionTypes": true,
+        "strictNullChecks": true,
+        "target": "es6",
+        "types": ["node", "mocha"]
+    }
+}

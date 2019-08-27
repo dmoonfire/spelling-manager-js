@@ -13,11 +13,13 @@
     "spelling"
   ],
   "scripts": {
-    "lint": "tslint --project src/",
     "pretest": "npm run build",
     "test": "mocha lib/spec/*-spec.js",
-    "prebuild": "npm run lint",
-    "build": "tsc -p src"
+    "build": "tsc --build",
+    "prepack": "npm run test",
+    "lint": "eslint -c .eslintrc.yml src/**/*.ts --fix",
+    "clean": "rimraf lib",
+    "prebuild": "npm run lint && npm run clean"
   },
   "homepage": "https://github.com/dmoonfire/spelling-manager-js",
   "repository": {
@@ -28,20 +30,66 @@
     "url": "https://github.com/dmoonfire/spelling-manager-js/issues"
   },
   "devDependencies": {
+    "@commitlint/cli": "^8.1.0",
+    "@commitlint/config-conventional": "^8.1.0",
+    "@semantic-release/changelog": "^3.0.4",
+    "@semantic-release/git": "^7.0.16",
+    "@semantic-release/npm": "^5.1.15",
     "@types/expect": "^1.20.1",
-    "@types/mocha": "^2.2.41",
-    "@types/natural": "^0.2.32",
+    "@types/mocha": "^2.2.48",
+    "@types/natural": "^0.6.1",
     "@types/node": "^8.0.17",
     "@types/xregexp": "^3.0.29",
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
+    "@typescript-eslint/parser": "^2.0.0",
+    "commitizen": "^4.0.3",
+    "eslint": "^6.2.2",
     "expect": "^1.20.2",
+    "husky": "^3.0.4",
     "mocha": "^6.1.4",
-    "tslint": "^5.8.0",
-    "typescript": "^2.4.2"
+    "semantic-release": "^15.13.24",
+    "typescript": "^3.5.3"
   },
   "dependencies": {
-    "natural": "0.5.0",
+    "natural": "^0.6.3",
     "xregexp": "^3.2.0"
   },
   "main": "lib/index.js",
-  "types": "lib/index.d.ts"
+  "types": "lib/index.d.ts",
+  "release": {
+    "branch": "master",
+    "message": "chore(release): v${nextRelease.version}\n\n${nextRelease.notes}",
+    "verifyConditions": [
+      "@semantic-release/changelog",
+      "@semantic-release/git"
+    ],
+    "analyzeCommits": [
+      "@semantic-release/commit-analyzer"
+    ],
+    "prepare": [
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/git"
+    ],
+    "publish": [
+      "@semantic-release/npm"
+    ],
+    "success": [],
+    "fail": []
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  }
 }

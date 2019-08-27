@@ -12,9 +12,8 @@ export class BufferSpellingChecker {
     private spellingManager: SpellingManager;
 
     constructor(
-        // Save the member variables.
         spellingManager: SpellingManager,
-        tokenizer: natural.Tokenizer = null) {
+        tokenizer: natural.Tokenizer | undefined = undefined) {
 
         // We weren't provided a tokenizer, we create a 'best guess' one that
         // handles most of the conditions. This attempts to include Unicode
