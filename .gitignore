@@ -5,6 +5,8 @@
 /.ntvs_analysis.dat.tmp
 .baseDir.ts
 npm-debug.log
+tsconfig.tsbuildinfo
+
 *.tgz
 
 src/*.js

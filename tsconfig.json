@@ -14,7 +14,7 @@
         "noFallthroughCasesInSwitch": true,
         "noImplicitAny": false,
         "noImplicitReturns": true,
-	    "rootDir": "./src",
+	"rootDir": "./src",
         "sourceMap": true,
         "strictFunctionTypes": true,
         "strictNullChecks": true,

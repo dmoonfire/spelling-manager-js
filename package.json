@@ -15,11 +15,11 @@
   "scripts": {
     "pretest": "npm run build",
     "test": "mocha lib/spec/*-spec.js",
-    "build": "tsc --build",
+    "build": "tsc",
     "prepack": "npm run test",
     "lint": "eslint -c .eslintrc.yml src/**/*.ts --fix",
     "clean": "rimraf lib",
-    "prebuild": "npm run lint && npm run clean"
+    "prebuild": "npm run lint"
   },
   "homepage": "https://github.com/dmoonfire/spelling-manager-js",
   "repository": {
