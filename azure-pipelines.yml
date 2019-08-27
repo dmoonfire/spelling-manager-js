@@ -16,8 +16,6 @@ steps:
     versionSpec: '10.x'
 
 - script: |
-    echo "B" $BUILD_SOURCEBRANCH
-    echo "W" $(echo $GH_TOKEN | wc)
     npm install
     npx commitlint --from=master to=$BUILD_SOURCEBRANCH
     npm run build
@@ -25,4 +23,5 @@ steps:
 
   env:
     GH_TOKEN: $(GH_TOKEN)
+    NPM_TOKEN: $(NPM_TOKEN)
   displayName: 'Semantic Release'
