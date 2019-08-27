@@ -18,6 +18,7 @@ steps:
 - script: |
     echo "B" $BUILD_SOURCEBRANCH
     echo "W" $(echo $GH_TOKEN | wc)
+    echo "D" $(cat .git/config)
     npm install
     npx commitlint --from=master to=$BUILD_SOURCEBRANCH
     npm run build
