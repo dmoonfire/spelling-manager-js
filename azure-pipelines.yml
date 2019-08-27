@@ -10,17 +10,19 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- displayName: 'Install Node.js'
-  task: NodeTool@0
+- task: NodeTool@0
+  displayName: 'Install Node.js'
   inputs:
     versionSpec: '10.x'
 
-- displayName: 'NPM Install'
-  script: |
+- script: |
     npm install
     npm run build
 
-- displayName: 'Semantic Release'
-  script: |
+  displayName: 'NPM Install'
+
+- script: |
     npx commitlint --from=master to=$BUILD_SOURCEBRANCH
     npx semantic-release
+
+  displayName: 'Semantic Release'
