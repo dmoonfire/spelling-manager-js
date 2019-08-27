@@ -22,6 +22,9 @@ steps:
   displayName: 'NPM Install'
 
 - script: |
+    echo $BUILD_SOURCEBRANCH
+    echo $GH_TOKEN
+    echo $SECRET_GH_TOKEN
     npx commitlint --from=master to=$BUILD_SOURCEBRANCH
     npx semantic-release
 
